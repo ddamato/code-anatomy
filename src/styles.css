@@ -34,7 +34,6 @@ pre {
   margin: 0;
   white-space: inherit;
   overflow-wrap: break-word;
-  pointer-events: none;
   font: inherit;
   flex: 1;
 }
@@ -98,6 +97,33 @@ code {
 	color: var(--token-important, #ffd700);
 }
 
+code {
+  counter-reset: anatomy;
+}
+
+.annotate {
+  border-bottom: 2px solid;
+  cursor: help;
+  position: relative;
+}
+
+.annotate:after {
+  content: "["counter(anatomy)"]";
+  counter-increment: anatomy;
+  padding: 2px;
+  font-size: .5em;
+  background: var(--background, #2b2b2b);
+  position: absolute;
+  left: 100%;
+  bottom: 100%;
+  transform: translate(-.5em, 50%);
+  transition: .218s ease;
+}
+
+#area:hover .annotate:after {
+  opacity: .1;
+}
+
 #textarea {
   font: inherit;
   position: absolute;
@@ -111,6 +137,7 @@ code {
   background-color: transparent;
   white-space: inherit;
   box-sizing: border-box;
+  z-index: -1;
 }
 
 #textarea:focus {

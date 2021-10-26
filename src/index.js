@@ -26,7 +26,30 @@ class CodeAnatomy extends window.HTMLElement {
     if (this.language) {
       const args = [this.html, Prism.languages[this.language], this.language];
       this.$code.innerHTML = Prism.highlight(...args);
+      this.annotations.forEach(this._annotate, this);
     }
+  }
+
+  _annotate({ match, occurrence, term }) {
+    const acceptNode = (node) => RegExp(match).test(node.data);
+    const args = [this.$code, window.NodeFilter.SHOW_TEXT, { acceptNode }];
+    const tree = document.createTreeWalker(...args);
+    while (tree.nextNode()) {
+      if (!occurrence) {
+        tree.currentNode.parentElement.classList.add('annotate');
+        this.$list.appendChild(document.createElement('li')).textContent = term;
+      } else {
+        occurrence--
+      }
+    }
+  }
+
+  get annotations() {
+    return [{
+      match: 'aria-label',
+      occurrence: 0,
+      term: 'Where the wild things are',
+    }];
   }
 
   get html() {
