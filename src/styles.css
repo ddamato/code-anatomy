@@ -1,0 +1,26 @@
+#area {
+  position: relative;
+}
+
+pre {
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  margin: 0;
+  pointer-events: none;
+}
+
+#textarea {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  resize: none;
+  color: transparent;
+  background-color: transparent;
+}
+
+#textarea:focus {
+  outline: none;
+}

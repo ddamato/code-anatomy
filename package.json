@@ -1,0 +1,46 @@
+{
+  "name": "code-anatomy",
+  "version": "1.0.0",
+  "description": "Identify parts of a code snippet",
+  "main": "src/index.js",
+  "browser": "dist/index.iife.js",
+  "unpkg": "dist/index.iife.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup src/index.js --file dist/index.iife.js --format iife -p html -p 'postcss={ inject: false }' -p terser -p @rollup/plugin-node-resolve -p @rollup/plugin-commonjs",
+    "dev": "watch-exec -w src/ -c 'npm run build'",
+    "test": "npm run build && mocha",
+    "version": "auto-changelog -p && git add CHANGELOG.md"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ddamato/code-anatomy.git"
+  },
+  "keywords": [
+    "web-component",
+    "anatomy"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ddamato/code-anatomy/issues"
+  },
+  "homepage": "https://github.com/ddamato/code-anatomy#readme",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "auto-changelog": "^2.3.0",
+    "chai": "^4.3.4",
+    "escape-html": "^1.0.3",
+    "jsdom": "^17.0.0",
+    "mocha": "^9.1.1",
+    "prismjs": "^1.25.0",
+    "rollup": "^2.56.3",
+    "rollup-plugin-html": "^0.2.1",
+    "rollup-plugin-postcss": "^4.0.1",
+    "rollup-plugin-terser": "^7.0.2",
+    "watch-exec": "^1.2.2"
+  }
+}
