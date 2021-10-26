@@ -26,7 +26,7 @@ class CodeAnatomy extends window.HTMLElement {
     if (this.language) {
       const args = [this.html, Prism.languages[this.language], this.language];
       this.$code.innerHTML = Prism.highlight(...args);
-      this.annotations.forEach(this._annotate, this);
+      this.definitions.forEach(this._annotate, this);
     }
   }
 
@@ -38,13 +38,12 @@ class CodeAnatomy extends window.HTMLElement {
       if (!occurrence) {
         tree.currentNode.parentElement.classList.add('annotate');
         this.$list.appendChild(document.createElement('li')).textContent = term;
-      } else {
-        occurrence--
       }
+      occurrence--;
     }
   }
 
-  get annotations() {
+  get definitions() {
     return [{
       match: 'aria-label',
       occurrence: 0,
