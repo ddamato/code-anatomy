@@ -1,8 +1,9 @@
 import html from './template.html';
 import css from './styles.css';
 import Prism from 'prismjs';
+import stripIndent from 'common-tags/lib/stripIndent';
 
-const xml = new XMLSerializer();
+const xml = new window.XMLSerializer();
 
 class CodeAnatomy extends window.HTMLElement {
   constructor() {
@@ -30,10 +31,11 @@ class CodeAnatomy extends window.HTMLElement {
 
   get html() {
     const nodes = this.$slot.assignedNodes();
-    return [...nodes]
+    const str = [...nodes]
       .map((node) => xml.serializeToString(node))
       .join('')
       .replace(/ xmlns="[^"]+"/g, '');
+    return stripIndent(str);
   }
 
   get language() {
