@@ -1,6 +1,6 @@
 {
   "name": "code-anatomy",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A native web-component which can identify parts of code; expected to be used in documentation pages to annotate.",
   "main": "src/index.js",
   "browser": "dist/index.iife.js",
