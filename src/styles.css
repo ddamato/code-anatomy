@@ -6,8 +6,8 @@
   position: relative;
   display: flex;
 
-  color: var(--code-anatomy--fg-color, #f8f8f2);
-	background: var(--code-anatomy--bg-color, #2b2b2b);
+  color: var(--code-anatomy--code-fg, #f8f8f2);
+	background: var(--code-anatomy--code-bg, #2b2b2b);
 	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 	text-align: left;
 	white-space: pre-wrap;
@@ -111,7 +111,7 @@ code {
 
 .annotate .token.punctuation {
   text-decoration: underline;
-  text-decoration-color: var(--code-anatomy--bg-color, #2b2b2b);
+  text-decoration-color: var(--code-anatomy--code-bg, #2b2b2b);
 }
 
 :host([edit]) .token {
@@ -126,8 +126,8 @@ code {
   content: "["attr(data-index)"]";
   padding: 2px;
   font-size: .5em;
-  background: var(--code-anatomy--bg-color, #2b2b2b);
-  border: 1px solid var(--code-anatomy--bg-color, #2b2b2b);
+  background: var(--code-anatomy--code-bg, #2b2b2b);
+  border: 1px solid var(--code-anatomy--code-bg, #2b2b2b);
   position: absolute;
   left: 100%;
   bottom: 100%;
