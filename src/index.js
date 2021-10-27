@@ -7,6 +7,9 @@ const xml = new window.XMLSerializer();
 const LINK_REGEX = /\[(?<textContent>[^\]]+)\]\((?<href>[^\)]+)\)/g;
 
 class CodeAnatomy extends window.HTMLElement {
+
+  /** Lifecycle methods */
+
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
@@ -20,13 +23,6 @@ class CodeAnatomy extends window.HTMLElement {
     this._$component = this.shadowRoot.getElementById('component');
   }
 
-  connectedCallback() {
-    this._$slot.addEventListener('slotchange', () => this._init());
-    this._$area.addEventListener('click', () => this._copy(this._$textarea));
-    this._$code.addEventListener('click' , ev => this._click(ev));
-    this.addEventListener('keyup' , ev => this._esc(ev));
-  }
-
   static get observedAttributes() { 
     return [ 'definitions', 'edit' ]
   }
@@ -36,66 +32,14 @@ class CodeAnatomy extends window.HTMLElement {
     if (attrName === 'edit') this._edit();
   }
 
-  _blur(index) {
-    const { textContent } = this._$list.children[index];
-    if (textContent.trim()) {
-      this.update(index, { term: textContent });
-    } else {
-      this.remove(index);
-    }
+  connectedCallback() {
+    this._$slot.addEventListener('slotchange', () => this._init());
+    this._$area.addEventListener('click', () => this._copy(this._$textarea));
+    this._$code.addEventListener('click' , ev => this._click(ev));
+    this.addEventListener('keyup' , ev => this._esc(ev));
   }
 
-  _getAnnotationByIndex(index) {
-    return this._$code.querySelector(`[data-index="${index+1}"]`);
-  }
-
-  _mouseenter(index) {
-    const $item = this._getAnnotationByIndex(index);
-    $item && $item.setAttribute('aria-current', '');
-  }
-
-  _mouseleave(index) {
-    const $item = this._getAnnotationByIndex(index);
-    $item && $item.removeAttribute('aria-current');
-  }
-
-  _edit() {
-    [...this._$list.children].forEach(this._attributes, this);
-  }
-
-  _attributes(item) {
-    if (this.edit) {
-      item.setAttribute('contentEditable', '');
-    } else {
-      item.removeAttribute('contentEditable');
-    }
-  }
-
-  _highlight() {
-    if (this.language) {
-      const args = [this.html, Prism.languages[this.language], this.language];
-      this._$code.innerHTML = Prism.highlight(...args);
-    }
-  }
-
-  _create({ match, occurrence, term }) {
-    const filter = ({ data }) => RegExp(match).test(data);
-    const textNodes = this._getTextNodes(this._$code, filter);
-    const index = this._$list.children.length;
-    if (textNodes[occurrence]) {
-      this._createAnnotation(textNodes[occurrence], index);
-      this._createDescription(term, index);
-    }
-  }
-
-  _getTextNodes(parent, acceptNode) {
-    const nodes = [];
-    const args = [parent, window.NodeFilter.SHOW_TEXT];
-    if (acceptNode) args.push({ acceptNode });
-    const walker = document.createTreeWalker(...args);
-    while(walker.nextNode()) nodes.push(walker.currentNode);
-    return nodes;
-  }
+   /** Public methods */
 
   clear() {
     this.definitions = [];
@@ -119,6 +63,32 @@ class CodeAnatomy extends window.HTMLElement {
     return this;
   }
 
+  /** Private methods */
+
+  _attributes(item) {
+    if (this.edit) {
+      item.setAttribute('contentEditable', '');
+    } else {
+      item.removeAttribute('contentEditable');
+    }
+  }
+
+  _blur(index) {
+    const { textContent } = this._$list.children[index];
+    if (textContent.trim()) {
+      this.update(index, { term: textContent });
+    } else {
+      this.remove(index);
+    }
+  }
+
+  _clear() {
+    this._$list.innerHTML = '';
+    if (!this.language) return;
+    const annotations = this._$code.querySelectorAll('.annotate');
+    annotations && [...annotations].forEach((elem) => elem.classList.remove('annotate'));
+  }
+
   _click({ target }) {
     if (!this.edit) return;
     const textNodes = this._getTextNodes(target);
@@ -127,6 +97,22 @@ class CodeAnatomy extends window.HTMLElement {
       return m.length < clean.length ? nodeValue : m;
     }, '');
     this.create({ match, occurrence: 0, term: this.placeholder });
+  }
+
+  _copy(elem) {
+    elem.select();
+    typeof document.execCommand === 'function' && document.execCommand("copy");
+  }
+
+  _create({ match, occurrence, term }) {
+    if (!this.language) return;
+    const filter = ({ data }) => RegExp(match).test(data);
+    const textNodes = this._getTextNodes(this._$code, filter);
+    const index = this._$list.children.length;
+    if (textNodes[occurrence]) {
+      this._createAnnotation(textNodes[occurrence], index);
+      this._createDescription(term, index);
+    }
   }
 
   _createAnnotation(node, index) {
@@ -150,6 +136,54 @@ class CodeAnatomy extends window.HTMLElement {
     this._$list.appendChild($term);
   }
 
+  _edit() {
+    [...this._$list.children].forEach(this._attributes, this);
+  }
+
+  _esc(ev) {
+    if (ev.key === 'Escape' && this.edit) {
+      this.edit = false;
+      this._copy(this._$component);
+    }
+  }
+
+  _getAnnotationByIndex(index) {
+    return this._$code.querySelector(`[data-index="${index+1}"]`);
+  }
+
+  _getTextNodes(parent, acceptNode) {
+    const nodes = [];
+    const args = [parent, window.NodeFilter.SHOW_TEXT];
+    if (acceptNode) args.push({ acceptNode });
+    const walker = document.createTreeWalker(...args);
+    while(walker.nextNode()) nodes.push(walker.currentNode);
+    return nodes;
+  }
+
+  _highlight() {
+    if (this.language) {
+      const args = [this.html, Prism.languages[this.language], this.language];
+      this._$code.innerHTML = Prism.highlight(...args);
+    }
+  }
+
+  _init() {
+    this._$code.innerHTML = '';
+    this._$textarea.textContent = this.html;
+    this._highlight();
+    this._render();
+  }
+
+  _mouseenter(index) {
+    const $item = this._getAnnotationByIndex(index);
+    $item && $item.setAttribute('aria-current', '');
+  }
+
+  _mouseleave(index) {
+    const $item = this._getAnnotationByIndex(index);
+    $item && $item.removeAttribute('aria-current');
+  }
+
   _processContent(content, parent) {
     let node = document.createTextNode(content);
     parent.appendChild(node);
@@ -165,24 +199,13 @@ class CodeAnatomy extends window.HTMLElement {
     }, 0);
   }
 
-  _init() {
-    this._$code.innerHTML = '';
-    this._$textarea.textContent = this.html;
-    this._highlight();
-    this._render();
-  }
-
   _render() {
     this._clear();
     this.definitions.forEach(this._create, this);
     this._$component.value = this.outerHTML;
   }
 
-  _clear() {
-    this._$list.innerHTML = '';
-    const annotations = this._$code.querySelectorAll('.annotate');
-    annotations && [...annotations].forEach((elem) => elem.classList.remove('annotate'));
-  }
+  /** Getters/Setters */
 
   get definitions() {
     try {
@@ -191,18 +214,6 @@ class CodeAnatomy extends window.HTMLElement {
     } catch (err) {
       return [];
     };
-  }
-
-  _esc(ev) {
-    if (ev.key === 'Escape' && this.edit) {
-      this.edit = false;
-      this._copy(this._$component);
-    }
-  }
-
-  _copy(elem) {
-    elem.select();
-    typeof document.execCommand === 'function' && document.execCommand("copy");
   }
 
   set definitions(value) {
@@ -225,18 +236,6 @@ class CodeAnatomy extends window.HTMLElement {
     }
   }
 
-  get placeholder() {
-    return this.getAttribute('placeholder') || 'placeholder';
-  }
-
-  set placeholder(value) {
-    if (value) {
-      this.setAttribute('placeholder', value);
-    } else {
-      this.removeAttribute('placeholder');
-    }
-  }
-
   get html() {
     const nodes = this._$slot.assignedNodes();
     const str = [...nodes]
@@ -255,6 +254,18 @@ class CodeAnatomy extends window.HTMLElement {
       this.setAttribute('language', newVal);
     } else {
       this.removeAttribute('language');
+    }
+  }
+
+  get placeholder() {
+    return this.getAttribute('placeholder') || 'placeholder';
+  }
+
+  set placeholder(value) {
+    if (value) {
+      this.setAttribute('placeholder', value);
+    } else {
+      this.removeAttribute('placeholder');
     }
   }
 }
