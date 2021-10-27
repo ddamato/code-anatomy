@@ -6,8 +6,8 @@
   position: relative;
   display: flex;
 
-  color: var(--foreground, #f8f8f2);
-	background: var(--background, #2b2b2b);
+  color: var(--code-anatomy--fg-color, #f8f8f2);
+	background: var(--code-anatomy--bg-color, #2b2b2b);
 	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 	text-align: left;
 	white-space: pre-wrap;
@@ -46,11 +46,11 @@ code {
 .token.prolog,
 .token.doctype,
 .token.cdata {
-	color: var(--token-comment, #d4d0ab);
+	color: var(--code-anatomy--token-comment, #d4d0ab);
 }
 
 .token.punctuation {
-	color: var(--token-punctuation, #fefefe);
+	color: var(--code-anatomy--token-punctuation, #fefefe);
 }
 
 .token.property,
@@ -58,12 +58,12 @@ code {
 .token.constant,
 .token.symbol,
 .token.deleted {
-	color: var(--token-property, #ffa07a);
+	color: var(--code-anatomy--token-property, #ffa07a);
 }
 
 .token.boolean,
 .token.number {
-	color: var(--token-number, #00e0e0);
+	color: var(--code-anatomy--token-number, #00e0e0);
 }
 
 .token.selector,
@@ -72,29 +72,29 @@ code {
 .token.char,
 .token.builtin,
 .token.inserted {
-	color: var(--token-string, #abe338);
+	color: var(--code-anatomy--token-string, #abe338);
 }
 
 .token.operator,
 .token.entity,
 .token.url,
 .token.variable {
-	color: var(--token-variable, #00e0e0);
+	color: var(--code-anatomy--token-variable, #00e0e0);
 }
 
 .token.atrule,
 .token.attr-value,
 .token.function {
-	color: var(--token-function, #ffd700);
+	color: var(--code-anatomy--token-function, #ffd700);
 }
 
 .token.keyword {
-	color: var(--token-keyword, #00e0e0);
+	color: var(--code-anatomy--token-keyword, #00e0e0);
 }
 
 .token.regex,
 .token.important {
-	color: var(--token-important, #ffd700);
+	color: var(--code-anatomy--token-important, #ffd700);
 }
 
 code {
@@ -111,7 +111,7 @@ code {
 
 .annotate .token.punctuation {
   text-decoration: underline;
-  text-decoration-color: var(--background, #2b2b2b);
+  text-decoration-color: var(--code-anatomy--bg-color, #2b2b2b);
 }
 
 :host([edit]) .token {
@@ -126,8 +126,8 @@ code {
   content: "["attr(data-index)"]";
   padding: 2px;
   font-size: .5em;
-  background: var(--background, #2b2b2b);
-  border: 1px solid var(--background, #2b2b2b);
+  background: var(--code-anatomy--bg-color, #2b2b2b);
+  border: 1px solid var(--code-anatomy--bg-color, #2b2b2b);
   position: absolute;
   left: 100%;
   bottom: 100%;
