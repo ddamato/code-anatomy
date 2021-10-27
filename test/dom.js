@@ -5,6 +5,7 @@ module.exports = class DOM {
     const dom = new JSDOM(html || '<html><head></head><body></body></html>');
     global.window = dom.window;
     global.document = global.window.document;
+    global.Element = global.window.Element;
   }
 
   clear() {
