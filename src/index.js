@@ -168,7 +168,6 @@ class CodeAnatomy extends window.HTMLElement {
   }
 
   _init() {
-    this._$code.innerHTML = '';
     this._$textarea.textContent = this.text;
     this._highlight();
     this._render();
