@@ -6,16 +6,69 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
     <style>
-      
+      body { 
+        font-family: Prompt, sans-serif; 
+        font-size: 1.5rem; 
+        color: black;
+        margin-bottom: 10rem;
+      }
+
+      a { color: inherit !important; }
+
+      p { max-width: 900px; margin: 1em auto}
+
+      h1 { text-align: center; }
+      section { 
+        max-width: 900px;
+        margin: 1rem auto;
+        border-top: 1px solid #ddd;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
     </style>
     <script src="dist/index.iife.js" defer></script>
   </head>
-  <body style="font-family: sans-serif">
-    <code-anatomy language="html" definitions="W3sibWF0Y2giOiJoZWxsbyB0aGVyZSIsIm9jY3VycmVuY2UiOjAsInRlcm0iOiJwbGFjZWhvbGRlciJ9LHsibWF0Y2giOiJhcmlhLWxhYmVsIiwib2NjdXJyZW5jZSI6MCwidGVybSI6InBsYWNlaG9sZGVyIn1d">
-      <div>
-        <h1 aria-label="hello there">My First Heading</h1>
-        <p>My first paragraph.</p>
-      </div>
-    </code-anatomy>
+  <body>
+    <h1>
+      <a href="https://github.com/ddamato/code-anatomy">&lt;code-anatomy/&gt;</a>
+    </h1>
+    <p>A native web-component which can identify parts of code; expected to be used in documentation pages to annotate.</p>
+    <section>
+      <h2>Basic HTML example (edit off)</h2>
+        <code-anatomy language="html"   definitions="W3sibWF0Y2giOiJtb3N0LWltcG9ydGFudCIsIm9jY3VycmVuY2UiOjAsInRlcm0iOiJTZXQgdGhlIGlkIG9mIHRoZSBtb3N0IGltcG9ydGFudCBoZWFkaW5nIn0seyJtYXRjaCI6ImgxIiwib2NjdXJyZW5jZSI6MCwidGVybSI6IlJlbWVtYmVyIHRvIHVzZSBvbmx5IDEgaDEgdGFnIn1d">
+          <main>
+            <h1 id="most-important">My First Heading</h1>
+            <p>My first paragraph.</p>
+          </main>
+        </code-anatomy>
+    </section>
+    <section>
+      <h2>Basic CSS example (edit off)</h2>
+        <code-anatomy language="css" definitions="W3sibWF0Y2giOiIuc2VjdGlvbiIsIm9jY3VycmVuY2UiOjAsInRlcm0iOiJUaGlzIGlzIGEgc2VsZWN0b3IsIHRhcmdldGluZyBhIGNsYXNzIGNhbGxlZCBcInNlY3Rpb25cIiJ9LHsibWF0Y2giOiItLWJhY2tncm91bmQtY29sb3IiLCJvY2N1cnJlbmNlIjowLCJ0ZXJtIjoiU2V0IHRoZSBjdXN0b20gcHJvcGVydHkgZmlyc3QifSx7Im1hdGNoIjoidmFyIiwib2NjdXJyZW5jZSI6MCwidGVybSI6IlVzZSB0aGUgdmFyIGZ1bmN0aW9uIHRvIHJlZmVyZW5jZSB0aGUgdmFyaWFibGUifV0=">
+          .section {
+            --background-color: blue;
+            background-color: var(--background-color, white);
+          }
+        </code-anatomy>
+    </section>
+    <section>
+      <h2>Basic JavaScript example (edit off)</h2>
+        <code-anatomy language="js" definitions="W3sibWF0Y2giOiJhZGQiLCJvY2N1cnJlbmNlIjowLCJ0ZXJtIjoiTmFtZSB0aGUgZnVuY3Rpb24gc29tZXRoaW5nIHNpbXBsZSJ9LHsibWF0Y2giOiJyZWR1Y2UiLCJvY2N1cnJlbmNlIjowLCJ0ZXJtIjoiVXNlIHRoZSBbcmVkdWNlIG1ldGhvZF0oIymgdG8gYWRkIHVwIGFsbCB0aGUgYXJndW1lbnRzIn1d">
+          function add() {
+            return [...arguments].reduce((acc, num) => acc + num, 0);
+          }
+        </code-anatomy>
+    </section>
+    <section>
+      <h2>Basic HTML example (edit on)</h2>
+        <code-anatomy language="html" edit definitions="W3sibWF0Y2giOiJwYXNzd29yZCIsIm9jY3VycmVuY2UiOjAsInRlcm0iOiJJZiB5b3UgdHJ5IHRvIGNsaWNrIHRoZSBzZWNvbmQgaW5wdXQgdGFnLCB0aGUgbG9naWMgc2VsZWN0cyB0aGUgZmlyc3Qgb2NjdXJyZW5jZSBvZiB0aGUgdG9rZW4gYWJvdmUuIFRvIHRhcmdldCBvdGhlciBvY2N1cnJlbmNlcywgeW91J2xsIG5lZWQgdG8gdXNlIHRoZSBBUEkuIn1d">
+          <form action="">
+            <input type="text" placeholder="E-mail address">
+            <input type="password">
+            <button class="cta">Sign in</button>
+          </form>
+        </code-anatomy>
+    </section>
   </body>
 </html>

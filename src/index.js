@@ -162,14 +162,14 @@ class CodeAnatomy extends window.HTMLElement {
 
   _highlight() {
     if (this.language) {
-      const args = [this.html, Prism.languages[this.language], this.language];
+      const args = [this.text, Prism.languages[this.language], this.language];
       this._$code.innerHTML = Prism.highlight(...args);
     }
   }
 
   _init() {
     this._$code.innerHTML = '';
-    this._$textarea.textContent = this.html;
+    this._$textarea.textContent = this.text;
     this._highlight();
     this._render();
   }
@@ -236,15 +236,6 @@ class CodeAnatomy extends window.HTMLElement {
     }
   }
 
-  get html() {
-    const nodes = this._$slot.assignedNodes();
-    const str = [...nodes]
-      .map((node) => xml.serializeToString(node))
-      .join('')
-      .replace(/ xmlns="[^"]+"/g, '');
-    return stripIndent(str);
-  }
-
   get language() {
     return this.getAttribute('language');
   }
@@ -267,6 +258,18 @@ class CodeAnatomy extends window.HTMLElement {
     } else {
       this.removeAttribute('placeholder');
     }
+  }
+
+  get text() {
+    const nodes = this._$slot.assignedNodes();
+    let str = [...nodes].map((node) => node.nodeValue).join('');
+    if (this.language === 'html') {
+      str = [...nodes]
+        .map((node) => xml.serializeToString(node))
+        .join('')
+        .replace(/ xmlns="[^"]+"/g, '');
+    }
+    return stripIndent(str);
   }
 }
 
