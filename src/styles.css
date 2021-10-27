@@ -102,26 +102,48 @@ code {
 }
 
 .annotate {
-  border-bottom: 2px solid;
-  cursor: help;
+  text-decoration: underline;
+  text-underline-offset: 2px;
   position: relative;
+  transition: .218s ease;
+  display: inline-block;
+}
+
+.annotate .token.punctuation {
+  text-decoration: underline;
+  text-decoration-color: var(--background, #2b2b2b);
+}
+
+:host([edit]) .token {
+  cursor: pointer;
+}
+
+:host(:not([edit])) .annotate {
+  cursor: help;
 }
 
 .annotate:after {
-  content: "["counter(anatomy)"]";
-  counter-increment: anatomy;
+  content: "["attr(data-index)"]";
   padding: 2px;
   font-size: .5em;
   background: var(--background, #2b2b2b);
+  border: 1px solid var(--background, #2b2b2b);
   position: absolute;
   left: 100%;
   bottom: 100%;
   transform: translate(-.5em, 50%);
   transition: .218s ease;
+  z-index: 1;
+  border-radius: 0.3em;
 }
 
 #area:hover .annotate:after {
   opacity: .1;
+}
+
+.annotate[aria-current]:after {
+  transform: translate(-.5em, 50%) scale(1.2);
+  border: 1px solid currentColor;
 }
 
 #textarea {
@@ -142,4 +164,36 @@ code {
 
 #textarea:focus {
   outline: none;
+}
+
+#list {
+  margin: 0;
+  padding: .5em 2em;
+}
+
+#list:empty {
+  display: none;
+}
+
+#list li {
+  cursor: pointer;
+  text-align: start;
+}
+
+#list li[contentEditable] {
+  cursor: text;
+}
+
+#list li:not(:last-child) {
+  margin-bottom: .5em;
+}
+
+#list a {
+  color: var(--code-anatomy--link-fg, currentColor);
+}
+
+#component {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
 }
